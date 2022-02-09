@@ -5,7 +5,7 @@ const router = express.Router()
 
 let db= con.handleDisconnection()
 
-router.get('/getstaff', (req, res) => {
+router.get('/v1/getstaff', (req, res) => {
     let sql = 'SELECT * FROM staff'
     db.query(sql, (err, results) => {
       if (err) {
