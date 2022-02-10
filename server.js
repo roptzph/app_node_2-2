@@ -11,7 +11,7 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.use(router)
+app.use('/v1',router)  //注意版本号，加v1  后，前端可以加/v1/getstaff
 
 app.listen(5000,()=>{
     console.log('server is running at http://localhost:5000')
