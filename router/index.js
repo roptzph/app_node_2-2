@@ -1,18 +1,28 @@
 const express = require('express')
+const req = require('express/lib/request')
 const { execSQL } = require('../db/mysql.js')
 
 const router = express.Router()
 
+//查询全部
 router.get('/getstaff', (req, res) => {
     let sql = 'SELECT * FROM staff'
     execSQL(sql).then(result => {
-      //console.log('result',result)
       res.send(result)  //发送查到的数据给前端
     })
 })
+
+//用户详情根据ID
+router.get('/getstaff_id', (req, res) => {
+  let sql = `SELECT * FROM staff where id = '${req.query.id}'`
+  console.log(sql)
+  execSQL(sql).then(result => {
+    res.send(result)  //发送查到的数据给前端
+  })
+})
+
 //新增用户
 router.post('/poststaff', (req, res) => {
-    //let sql = "INSERT INTO staff( id, name, sex, birthday, other, age, poid) VALUES (1, '朱先生4', '男', '2020-05-05', '12', 4, 2)"
     let sql = `INSERT INTO staff(id, name, sex, birthday, other, age, poid)
        VALUES(
         '${req.body.id}',
@@ -22,24 +32,16 @@ router.post('/poststaff', (req, res) => {
         '${req.body.other}',
         '${req.body.age}',
         '${req.body.poid}') `
-      console.log(sql)
-    //let sql = 'select 1'
     execSQL(sql).then(result => {
-      console.log(req.body.name,req.body.age)
-      res.send(result)  //发送查到的数据给前端
+       res.send(result)  //发送查到的数据给前端
     })
 })
 //删除用户
 router.delete('/delstaff', (req, res) => {
-    let id = req.query.id
-    //let id = req.params.id
-    //let id = req.body.id
-    //let id = 90
-    //let sql = "INSERT INTO staff( id, name, sex, birthday, other, age, poid) VALUES (1, '朱先生4', '男', '2020-05-05', '12', 4, 2)"
+    let id = req.query.id  //get  del  put
+    //let id = req.params.id  //?
+    //let id = req.body.id  //post
     let sql = `delete from staff where  id = '${id}'` //'${req.params.id}'`
-        
-      console.log(sql)
-    //let sql = 'select 1'
     execSQL(sql).then(result => {
       res.send(result)  //发送查到的数据给前端
     })
