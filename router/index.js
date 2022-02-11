@@ -12,7 +12,6 @@ router.get('/getstaff', (req, res) => {
 })
 //新增用户
 router.post('/poststaff', (req, res) => {
-    //let sql = "INSERT INTO staff( id, name, sex, birthday, other, age, poid) VALUES (1, '朱先生4', '男', '2020-05-05', '12', 4, 2)"
     let sql = `INSERT INTO staff(id, name, sex, birthday, other, age, poid)
        VALUES(
         '${req.body.id}',
@@ -35,7 +34,6 @@ router.delete('/delstaff', (req, res) => {
     //let id = req.params.id
     //let id = req.body.id
     //let id = 90
-    //let sql = "INSERT INTO staff( id, name, sex, birthday, other, age, poid) VALUES (1, '朱先生4', '男', '2020-05-05', '12', 4, 2)"
     let sql = `delete from staff where  id = '${id}'` //'${req.params.id}'`
         
       console.log(sql)
