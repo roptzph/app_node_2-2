@@ -26,5 +26,6 @@ function execSQL(sql){
     return promise
 }
 
+//exports.execSQL = execSQL
 exports.execSQL = execSQL
   
