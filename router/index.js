@@ -15,7 +15,7 @@ router.get('/getstaff', (req, res) => {
 //用户详情根据ID
 router.get('/getstaff_id', (req, res) => {
   let sql = `SELECT * FROM staff where id = '${req.query.id}'`
-  console.log(sql)
+  //console.log(sql)
   execSQL(sql).then(result => {
     res.send(result)  //发送查到的数据给前端
   })
@@ -32,6 +32,24 @@ router.post('/poststaff', (req, res) => {
         '${req.body.other}',
         '${req.body.age}',
         '${req.body.poid}') `
+    execSQL(sql).then(result => {
+       res.send(result)  //发送查到的数据给前端
+    })
+})
+//修改用户 (id, name, sex, birthday, other, age, poid)
+router.get('/putstaff', (req, res) => {
+    //let  sql = 'select 1'
+      let sql = `UPDATE  staff SET 
+
+      id = '${req.query.id}',
+       name = '${req.query.name}', 
+       sex = '${req.query.sex}',
+       birthday = '${req.query.birthday}',
+       other = '${req.query.other}',
+       age = '${req.query.age}',
+       poid = '${req.query.poid}', 
+       where  id = '${req.query.id}'`   
+console.log(sql)
     execSQL(sql).then(result => {
        res.send(result)  //发送查到的数据给前端
     })
