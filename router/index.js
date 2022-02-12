@@ -41,18 +41,19 @@ router.get('/putstaff', (req, res) => {
     //let  sql = 'select 1'
       let sql = `UPDATE  staff SET 
 
-      id = '${req.query.id}',
+      
        name = '${req.query.name}', 
        sex = '${req.query.sex}',
-       birthday = '${req.query.birthday}',
+      
        other = '${req.query.other}',
-       age = '${req.query.age}',
-       poid = '${req.query.poid}', 
-       where  id = '${req.query.id}'`   
+       age = ${req.query.age},
+       poid = ${req.query.poid} 
+       where  id = ${req.query.id}`   
 console.log(sql)
     execSQL(sql).then(result => {
        res.send(result)  //发送查到的数据给前端
-    })
+        console.log('修改成功')
+      })
 })
 //删除用户
 router.delete('/delstaff', (req, res) => {
