@@ -37,18 +37,18 @@ router.post('/poststaff', (req, res) => {
     })
 })
 //修改用户 (id, name, sex, birthday, other, age, poid)
-router.get('/putstaff', (req, res) => {
-    //let  sql = 'select 1'
+router.post('/putstaff', (req, res) => {
+    console.log('select 1')
       let sql = `UPDATE  staff SET 
 
       
-       name = '${req.query.name}', 
-       sex = '${req.query.sex}',
-      
-       other = '${req.query.other}',
-       age = ${req.query.age},
-       poid = ${req.query.poid} 
-       where  id = ${req.query.id}`   
+       name = '${req.body.name}', 
+       sex = '${req.body.sex}',
+       birthday = '${req.body.birthday}'
+       other = '${req.body.other}',
+       age = ${req.body.age},
+       poid = ${req.body.poid} 
+       where  id = ${req.body.id}`   
 console.log(sql)
     execSQL(sql).then(result => {
        res.send(result)  //发送查到的数据给前端
