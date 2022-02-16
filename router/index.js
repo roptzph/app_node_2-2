@@ -32,6 +32,7 @@ router.post('/poststaff', (req, res) => {
         '${req.body.other}',
         '${req.body.age}',
         '${req.body.poid}') `
+        console.log(sql)
     execSQL(sql).then(result => {
        res.send(result)  //发送查到的数据给前端
     })
