@@ -5,6 +5,15 @@ const dayjs = require('dayjs')
 
 const router = express.Router()
 
+//获取部门数据
+router.get('/getDept', (req, res) => {
+  let sql = 'SELECT * FROM dept'
+  execSQL(sql).then(result => {
+    res.send(result)  //发送查到的数据给前端
+  })
+})
+
+
 //查询全部
 router.get('/getstaff', (req, res) => {
     let sql = 'SELECT * FROM staff'
