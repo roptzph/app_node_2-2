@@ -16,7 +16,29 @@ router.get('/getDept', (req, res) => {
 
 //查询全部
 router.get('/getstaff', (req, res) => {
-    let sql = 'SELECT * FROM staff'
+    let sql = `SELECT * FROM staff  `
+    execSQL(sql).then(result => {
+      res.send(result)  //发送查到的数据给前端
+    })
+})
+
+//条件查询
+router.get('/findstaff', (req, res) => {
+    let age1 = req.query.age1
+    let age2 = req.query.age2
+    if (age1 === '' && age2 === '') sql_age = ''
+    if (age1 != '' && age2 === '') sql_age = ` and age >= ${age1} `
+    if (age1 === '' && age2 != '') sql_age = ` and age <= ${age2} `
+    if ( age1 == age2  && age1 != '') sql_age = ` and age = ${age2} `
+    if ( age1 < age2  && age1 != '') sql_age = ` and age >= ${age1}  and age <= ${age2}` 
+    
+    let sql1 = `SELECT * FROM staff where  name  like  '%${req.query.name}%' `
+    let sql2 = sql1+ `and  sex like '%${req.query.sex}%'`
+    let sql3 = sql2+ ` and  poid like '%${req.query.poid}%'` 
+    let sql = sql3 + sql_age 
+   
+   // let sq5 = sql2+ ` and  age <= '${req.query.age2}'` 
+    console.log(sql)
     execSQL(sql).then(result => {
       res.send(result)  //发送查到的数据给前端
     })
