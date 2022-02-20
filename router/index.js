@@ -2,6 +2,8 @@ const express = require('express')
 const req = require('express/lib/request')
 const { execSQL } = require('../db/mysql.js')
 const dayjs = require('dayjs')
+const multer  = require('multer')
+const  fs  = require('fs')
 
 const router = express.Router()
 
@@ -44,6 +46,64 @@ router.get('/findstaff', (req, res) => {
     })
 })
 
+//图片上传
+//上传的文件保存在 public/images/
+const storage = multer.diskStorage({
+  //存储的位置
+  destination(req, file, cb){
+      cb(null, 'public/images/')
+  },
+  //文件名字的确定 multer默认帮我们取一个没有扩展名的文件名，因此需要我们自己定义
+  filename(req, file, cb){
+      cb(null,  file.originalname)
+  }
+})
+
+//传入storage 除了这个参数我们还可以传入dest等参数
+const upload = multer({storage})
+router.post('/upLoad', upload.single('file'), (req, res) =>{
+ 
+ //给客户端返回图片的访问地址 域名 + 文件名字 
+ //因为在 app.js文件里面我们已经向外暴漏了存储图片的文件夹 uploa
+  const url = 'http://localhost:5000/'+ req.file.filename
+  res.json({url})
+})
+
+
+
+// router.post('/upload', multer({
+//   //设置文件存储路径
+//   dest: 'public/images'
+// }).array('file', 1), function (req, res, next) {
+//   const url = 'http://localhost:5000/' + req.file.filename
+//   let files = req.files;
+//   let file = files[0];
+//   let fileInfo = {};
+//   let path = 'public/images/'  + file.originalname;  //+ Date.now().toString()
+//   fs.renameSync('./public/images/' + file.filename, path);
+  
+//   //获取文件基本信息
+//   fileInfo.type = file.mimetype;
+//   fileInfo.name = file.originalname;
+//   fileInfo.size = file.size;
+//   fileInfo.path = path;
+//   res.json(url)
+//  // res.json({
+//  //   code: 0,
+//  //   msg: 'OK',
+//  //   data: fileInfo
+//   //})
+
+// });
+
+
+
+
+
+
+
+
+
 //用户详情根据ID
 router.get('/getstaff_id', (req, res) => {
   let sql = `SELECT * FROM staff where id = '${req.query.id}'`
@@ -55,15 +115,21 @@ router.get('/getstaff_id', (req, res) => {
 
 //新增用户        //'${req.body.id}',
 router.post('/poststaff', (req, res) => {
-    let sql = `INSERT INTO staff( name, sex, birthday, other, poid,putdate)
+    let sql = `INSERT INTO staff( name, card,sex, birthday,age, other, poid,putdate,imgurl)
        VALUES(
 
-        '${req.body.name}', 
-        '${req.body.sex}',
-        '${req.body.birthday}',
-        '${req.body.other}',
-        '${req.body.poid}',
-        '${dayjs().format('YYYY-MM-DD HH:mm:ss')}') `
+          '${req.body.name}', 
+          '${req.body.card}',
+          '${req.body.sex}',
+          '${req.body.birthday}',
+           ${req.body.age},
+          '${req.body.other}',
+           ${req.body.poid},
+          '${dayjs().format('YYYY-MM-DD HH:mm:ss')}',
+           '${req.body.imgurl}'
+        ) `
+
+        console.log(sql)
     execSQL(sql).then(result => {
        res.send(result)  //发送查到的数据给前端
     })
