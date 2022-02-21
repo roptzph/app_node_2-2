@@ -146,6 +146,7 @@ router.put('/putstaff', (req, res) => {
        birthday = '${params.birthday}',
        other = '${params.other}',
        poid = ${params.poid},
+       imgurl = '${params.imgurl}',
        putdate = '${dayjs().format('YYYY-MM-DD HH:mm:ss')}' 
        where  id = ${params.id}`   
 console.log(sql)
