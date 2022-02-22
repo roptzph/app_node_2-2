@@ -23,6 +23,16 @@ router.get('/getstaff', (req, res) => {
       res.send(result)  //发送查到的数据给前端
     })
 })
+//获取分页的全部记录数
+router.get('/getCountstaff', (req, res) => {
+    let row = 0
+    let sql = `SELECT  count(*) as n   FROM staff  `
+    execSQL(sql).then(result => {
+      let   rows = result
+      res.send(rows)  //发送查到的数据给前端
+      console.log(rows)
+    })
+})
 
 //条件查询
 router.get('/findstaff', (req, res) => {
