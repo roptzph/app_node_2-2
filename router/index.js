@@ -4,8 +4,50 @@ const { execSQL } = require('../db/mysql.js')
 const dayjs = require('dayjs')
 const multer  = require('multer')
 const  fs  = require('fs')
+const  jwt = require('jsonwebtoken')
 
 const router = express.Router()
+
+//登录接口
+/**
+ * 语法：
+ * 如60，"2 days"，"10h"，"7d"，Expiration time，过期时间
+ *  jwt.sign({},'秘钥','过期时间,{expiresIn:20*1,'1day''1h'}')
+ */
+
+/**
+ * 登录 login
+ * 接受的字段：username,password
+ * 测试：postman  
+ */
+ router.post('/login', (req, res) => {
+  let { username, password } = req.body
+  //请求数据库
+  let sql = "select * from userinfo where username=? and password=?";
+  let arr = [username, password]
+  console.log(arr)
+  execSQL(sql, arr, result => {
+      if (result.length > 0) {
+          let token = jwt.sign({
+              username: result[0].username,
+              id: result[0].id
+          }, 'xyjieieici44didj88kkkd', {
+              expiresIn: 20 * 1
+          })
+          res.send({
+              status: 200,
+              data: token
+          })
+      } else {
+          res.send({
+              status: 404,
+              msg: '信息错误'
+          })
+      }
+
+  })
+})
+
 
 //获取部门数据
 router.get('/getDept', (req, res) => {
